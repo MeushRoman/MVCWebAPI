@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="Scripts/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+    <button id="btn1">Загрузить все (GET)</button>
+    <button id="btn2">Загрузить page= (GET)</button>
+    <button id="btn3">(POST)</button>
+    <button id="btn4">getScript</button>
+    <input type="text" id="txtF1" value="4" />
+    <button id="btn5">Загрузить книги</button>
+    <div id="tableBlock"></div>
+
+    <div id="news"><h3>Нет новостей</h3></div>
+
+
+    <script type="text/javascript">
+        $(function () {
+            $('#btn1').click(function () {
+                $.ajax({
+                    //url: "https://reqres.in/api/users",
+                    //url: "http://localhost:59274/books/getAll",
+                    url: "http://dummy.restapiexample.com/api/v1/employees",
+                    type: "GET",
+                    dataType: "html",
+                    success: function (data) {
+                        $("#news").html(data);
+                        console.log(data);
+                        alert("Local success callback.");
+                    },
+                    error: function (jqXHR, status, err) {
+                        alert("Local error callback." + err);
+                    },
+                    complete: function (jqXHR, status) {
+                        alert("Local completion callback.");
+                    }
+                });
+            });
+
+            $('#btn2').click(function () {
+                var page = $('#txtF1').val();
+                console.log('page = ' + page);
+                $.ajax({
+                    //url: "https://reqres.in/api/users",
+                    url: "http://localhost:59274/books/getById",
+                    type: "GET",
+                    data: { "page": page },
+                    dataType: "html",
+                    success: function (data) {
+                        $("#news").html(data);
+                        alert("Local success callback.");
+                    },
+                    error: function (err) {
+                        alert("Local error callback.");
+                    },
+                    complete: function () {
+                        alert("Local completion callback.");
+                    }
+                });
+            });
+
+
+            function WriteResponse(books) {
+                var strResult = "<table><th>ID</th><th>Название</th><th>Автор</th><th>Год издания</th>";
+                $.each(books, function (index, book) {
+                    strResult += "<tr><td>" + book.Id + "</td><td> " + book.Name + "</td><td>" +
+                        book.Author + "</td><td>" + book.Year +
+                        "</td><td><a id='editItem' data-item='" + book.Id + "' onclick='EditItem(this);' >Редактировать</a></td>" +
+                        "<td><a id='delItem' data-item='" + book.Id + "' onclick='DeleteItem(this);' >Удалить</a></td></tr>";
+                });
+                strResult += "</table>";
+                $("#tableBlock").html(strResult);
+            }
+
+
+            $('#btn3').click(function () {
+                $.ajax({
+                    url: "https://reqres.in/api/users",
+                    type: "POST",
+                    data: {
+                        "name": "morpheus",
+                        "job": "leader"
+                    },
+                    dataType: "html",
+                    success: function (data) {
+                        $("#news").html(data);
+                        alert("Local success callback.");
+                    },
+                    error: function (jqXHR, status, err) {
+                        alert("Local error callback.");
+                    },
+                    complete: function (jqXHR, status) {
+                        alert("Local completion callback.");
+                    }
+                });
+            });
+            $('#btn4').click(function () {
+                $.getScript('Scripts/redStyle.js');
+            });
+
+             $('#btn5').click(function () {
+                $.ajax({
+                    //url: "https://reqres.in/api/users/2",
+                    url: "http://localhost:59274/books/getAll",
+                    type: "GET",
+                    dataType: "json",
+                    success: function (data) {
+                        WriteResponse(data);                        
+                    },
+                    error: function (jqXHR, status, err) {
+                        alert("Local error callback.");
+                    },
+                    complete: function (jqXHR, status) {
+                        alert("Local completion callback.");
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
