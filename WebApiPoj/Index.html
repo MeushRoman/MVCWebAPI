@@ -6,20 +6,60 @@
     <script type="text/javascript" src="Scripts/jquery-3.3.1.min.js"></script>
 </head>
 <body>
+
+
+
     <button id="btn1">Загрузить все</button>
+    <button id="add">Добавить Книгу</button>
+    <button id="remove">Удалить книгу</button>
+    <button id="findbyid">Найти книгу по id</button>
+
+
+
+
+
 
     <script type="text/javascript">
+
+        $(function () {
+            $('#add').click(function () {
+
+                var formData = {
+                    'Id': $('#id').val(),
+                    'Name': $('#name').val(),
+                    'Author': $('#author').val(),
+                    'Year': $('#year').val(),
+                };
+
+
+                $.ajax({
+                    url: "http://localhost:64650/books/addBook",
+                    type: "POST",
+                    dataType: "application/json",
+                    data: formData,
+                    success: function (response) {
+                        alert(response);
+                        console.log(formData);
+                        // выполнится после успешной отправки
+                    },
+                    processData: false
+                })
+            });
+        });
+
+
+
         $(function () {
             $('#btn1').click(function () {
                 $.ajax({
                     //url: "https://reqres.in/api/users",
-                    //url: "http://localhost:64650/books/getAll",
-                   url: "http://dummy.restapiexample.com/api/v1/employees",
+                    url: "http://localhost:64650/books/getAll",
+                    //url: "http://dummy.restapiexample.com/api/v1/employees",
                     type: "GET",
                     dataType: "html",
                     //возвращает данные в дата
                     success: function (data) {
-                       // записываем результат в блок news
+                        // записываем результат в блок news
                         $("#news").html(data);
                         console.log(data);
                         alert("Local success callback");
@@ -32,9 +72,20 @@
                     }
                 })
             })
-        })
+        });
     </script>
-    <div id="news"></div>
+
+    <label>Id <input type="text" id="id" /></label>
+    <label>Name <input type="text" id="name" /></label>
+    <label>Author <input type="text" id="author" /></label>
+    <label>Year <input type="text" id="year" /></label>
+
+    <div id="result">
+
+    </div>
+
 
 </body>
+
 </html>
+
