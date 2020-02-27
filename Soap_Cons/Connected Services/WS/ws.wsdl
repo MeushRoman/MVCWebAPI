@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="First">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FirstResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FirstResult" type="tns:Book" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Book">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="BookName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Author" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Year" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Publish" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Type" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="bookLocation" type="tns:BookLocation" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="BookLocation">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="LocationName1" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LocationName2" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Second">
+        <s:complexType />
+      </s:element>
+      <s:element name="SecondResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SecondResult" type="tns:ArrayOfBook" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfBook">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Book" nillable="true" type="tns:Book" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="FirstSoapIn">
+    <wsdl:part name="parameters" element="tns:First" />
+  </wsdl:message>
+  <wsdl:message name="FirstSoapOut">
+    <wsdl:part name="parameters" element="tns:FirstResponse" />
+  </wsdl:message>
+  <wsdl:message name="SecondSoapIn">
+    <wsdl:part name="parameters" element="tns:Second" />
+  </wsdl:message>
+  <wsdl:message name="SecondSoapOut">
+    <wsdl:part name="parameters" element="tns:SecondResponse" />
+  </wsdl:message>
+  <wsdl:portType name="WSSoap">
+    <wsdl:operation name="First">
+      <wsdl:input message="tns:FirstSoapIn" />
+      <wsdl:output message="tns:FirstSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Second">
+      <wsdl:input message="tns:SecondSoapIn" />
+      <wsdl:output message="tns:SecondSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WSSoap" type="tns:WSSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="First">
+      <soap:operation soapAction="http://tempuri.org/First" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Second">
+      <soap:operation soapAction="http://tempuri.org/Second" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="WSSoap12" type="tns:WSSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="First">
+      <soap12:operation soapAction="http://tempuri.org/First" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Second">
+      <soap12:operation soapAction="http://tempuri.org/Second" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="WS">
+    <wsdl:port name="WSSoap" binding="tns:WSSoap">
+      <soap:address location="http://n215-teacher:8089/ws.asmx" />
+    </wsdl:port>
+    <wsdl:port name="WSSoap12" binding="tns:WSSoap12">
+      <soap12:address location="http://n215-teacher:8089/ws.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
